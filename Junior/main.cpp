@@ -2,6 +2,7 @@
 #include <fstream>
 #include <map>
 #include <string.h>
+#include <ctime>
 
 int main(int argc, char* argv[])
 {
@@ -23,24 +24,31 @@ int main(int argc, char* argv[])
     {
         char c;
         inf >> c;
-        if (c == '<')
+        if (c == '<') 
         {
             std::string sl = "";
             inf >> c;
-            while (c != '>')
+            while (c != '>') 
             {
                 sl += c;
                 inf >> c;
             }
-            if (sl == "root" || sl=="/root") continue;
+            if (sl == "root" || sl == "/root") continue;
             std::string str = "";
             inf >> c;
-            while (c != '<')
+            while (c != '<') 
             {
                 str += c;
                 inf >> c;
             }
-            dict.insert(std::make_pair(sl, str));
+            if (sl != "current_date")
+                dict.insert(std::make_pair(sl, str));
+            else
+            {
+                time_t now = time(0);
+                std::string dt = ctime(&now);
+                dict.insert(std::make_pair(sl, dt));
+            }
             while (c != '>') inf >> c;
         }
     }
@@ -53,22 +61,18 @@ int main(int argc, char* argv[])
         {
             if (str[i] == '{')
             {
-                if (str[i + 1] == '*')
+                i += 1;
+                std::string sl = "";
+                while (str[i] != '}')
                 {
-                    i += 2;
-                    std::string sl = "";
-                    while (str[i] != '}')
-                    {
+                    if (str[i] != '*')
                         sl += str[i];
-                        i++;
-                    }
-                    if (f)
-                        outf << dict.find(sl)->second;
-                    else
-                        std::cout << dict.find(sl)->second;
+                    i++;
                 }
+                if (f)
+                    outf << dict.find(sl)->second;
                 else
-                for (; str[i] != '}'; ++i) {}
+                    std::cout << dict.find(sl)->second;
             }
             else
             {
