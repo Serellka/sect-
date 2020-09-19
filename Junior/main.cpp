@@ -1,13 +1,18 @@
 #include <iostream>
 #include <fstream>
 #include <map>
+#include <string.h>
 
-int main()
+int main(int argc, char* argv[])
 {
+    std::cout << argv[1];
     std::map<std::string, std::string> dict;
     std::fstream inf("../data.xml", std::ifstream::in);
     std::fstream inpf("../template.txt", std::ifstream::in);
-    std::fstream outf("../output.txt", std::ofstream::out);
+    std::fstream outf;
+    bool f = !strcmp("-f", argv[1]);
+    if (f)
+        outf.open("../output.txt", std::ofstream::out);
 
     if (!inf && !inpf)
     {
@@ -57,16 +62,25 @@ int main()
                         sl += str[i];
                         i++;
                     }
-                    outf << dict.find(sl)->second;
+                    if (f)
+                        outf << dict.find(sl)->second;
+                    else
+                        std::cout << dict.find(sl)->second;
                 }
                 else
                 for (; str[i] != '}'; ++i) {}
             }
             else
             {
-                outf << str[i];
+                if (f)
+                    outf << str[i];
+                else
+                    std::cout << str[i];
             }
         }
-        outf << '\n';
+        if (f)
+            outf << '\n';
+        else
+            std::cout << '\n';
     }
 }
