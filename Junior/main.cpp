@@ -18,6 +18,7 @@ int main(int argc, char* argv[])
     if (!inf && !inpf)
     {
         std::cerr << "Oh shit";
+        return 0;
     }
 
     while (inf)
