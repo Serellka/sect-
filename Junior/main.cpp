@@ -6,7 +6,7 @@
 
 int main(int argc, char* argv[])
 {
-    std::cout << argv[1];
+    //std::cout << argv[1];
     std::map<std::string, std::string> dict;
     std::fstream inf("../data.xml", std::ifstream::in);
     std::fstream inpf("../template.txt", std::ifstream::in);
@@ -25,11 +25,11 @@ int main(int argc, char* argv[])
     {
         char c;
         inf >> c;
-        if (c == '<') 
+        if (c == '<')
         {
             std::string sl = "";
             inf >> c;
-            while (c != '>') 
+            while (c != '>')
             {
                 sl += c;
                 inf >> c;
@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
             if (sl == "root" || sl == "/root") continue;
             std::string str = "";
             inf >> c;
-            while (c != '<') 
+            while (c != '<')
             {
                 str += c;
                 inf >> c;
